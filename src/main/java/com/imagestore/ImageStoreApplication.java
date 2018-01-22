@@ -13,12 +13,12 @@ public class ImageStoreApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ImageStoreApplication.class, args);
 	}
-	
-//    @Bean
-//    public FilterRegistrationBean jwtFilter() {
-//        final FilterRegistrationBean registrationBean = new FilterRegistrationBean();
-//        registrationBean.setFilter(new JwtFilter());
-//        registrationBean.addUrlPatterns("/images/*");
-//        return registrationBean;
-//    }
+
+	@Bean
+	public FilterRegistrationBean jwtFilter() {
+		final FilterRegistrationBean registrationBean = new FilterRegistrationBean();
+		registrationBean.setFilter(new JwtFilter());
+		registrationBean.addUrlPatterns("/images/*");
+		return registrationBean;
+	}
 }
