@@ -1,0 +1,14 @@
+<div class="container" ng-controller='RegistrationController'>
+	<h1>Register new account</h1>
+	<form ng-submit="register()">
+		Email: <input type="text" ng-model="email" /><br /> 
+		Name: <input type="text" ng-model="name" /><br /> 
+		Password: <input type="password" ng-model="password" /><br /> 
+		<input type="submit" value="Register" />
+	</form>
+	<div class="alert alert-danger" role="alert"
+		ng-show="error.data.message">
+		<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+		<span class="sr-only">Error:</span> {{error.data.message}}
+	</div>
+</div>
