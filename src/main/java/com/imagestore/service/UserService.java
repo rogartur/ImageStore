@@ -20,4 +20,8 @@ public class UserService {
 			throw new ServletException("Could not find user with email: " + email);
 		return user;
 	}
+
+	public User save(User user) {
+		return userRepository.save(user);
+	}
 }

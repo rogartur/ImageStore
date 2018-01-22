@@ -21,8 +21,8 @@
             })
  
             .when('/register', {
-                controller: 'RegisterController',
-                templateUrl: 'register/register.html',
+                controller: 'RegistrationController',
+                templateUrl: 'registration/registration.html',
                 controllerAs: 'vm'
             })
             
