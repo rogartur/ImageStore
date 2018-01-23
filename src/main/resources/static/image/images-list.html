@@ -1,0 +1,8 @@
+<div class="container" ng-controller='ImagesController'>
+	<h1>Your Images</h1>
+	<div class="alert alert-danger" role="alert"
+		ng-show="error.data.message">
+		<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+		<span class="sr-only">Error:</span> {{error.data.message}}
+	</div>
+</div>

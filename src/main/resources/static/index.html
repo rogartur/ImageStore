@@ -10,17 +10,27 @@
 <link rel="stylesheet" href="libs/bootstrap/css/bootstrap.css">
 </head>
 
-<body ng-app="App">
-	<div ng-view></div>
+<body ng-app="app">
+	<div class="jumbotron">
+		<div class="container">
+			<div class="col-sm-8 col-sm-offset-2">
+				<div ng-view></div>
+			</div>
+		</div>
+	</div>
 </body>
 
 <script src="libs/jquery/jquery.js"></script>
 <script src="libs/bootstrap/js/bootstrap.js"></script>
 <script src="libs/angular/angular.js"></script>
 <script src="libs/angular/angular-route.js"></script>
+<script src="//code.angularjs.org/1.6.3/angular-cookies.min.js"></script>
 <script src="app.js"></script>
 <script src="app-services/user.service.js"></script>
+<script src="app-services/image.service.js"></script>
 <script src="login/login.controller.js"></script>
-<script src="image/image.controller.js"></script>
+<script src="image/images-list.controller.js"></script>
+<script src="image/image-upload.controller.js"></script>
+<script src="image/image-upload.directive.js"></script>
 <script src="registration/registration.controller.js"></script>
 </html>
