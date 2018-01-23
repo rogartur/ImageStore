@@ -1,5 +1,6 @@
 package com.imagestore.model;
 
+import java.sql.Blob;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -18,7 +19,7 @@ public class ImageFile {
 
 	private String name;
 
-	private byte[] file;
+	private Blob file;
 
 	private String mimeType;
 
@@ -28,7 +29,7 @@ public class ImageFile {
 	@JoinColumn(name = "userId")
 	private User user;
 
-	public ImageFile(String name, User owner, byte[] file, String mimeType) {
+	public ImageFile(String name, User owner, Blob file, String mimeType) {
 		this.name = name;
 		this.user = owner;
 		this.file = file;
@@ -55,11 +56,11 @@ public class ImageFile {
 		this.user = user;
 	}
 
-	public byte[] getFile() {
+	public Blob getFile() {
 		return file;
 	}
 
-	public void setFile(byte[] file) {
+	public void setFile(Blob file) {
 		this.file = file;
 	}
 

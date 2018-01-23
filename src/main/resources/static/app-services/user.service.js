@@ -29,7 +29,7 @@
         }
         
         function get(userEmail) {
-            return $http.get('/user/get/'+userEmail).then(handleSuccess, handleError('User not found'));
+            return $http.get('/user/get/'+userEmail+'/').then(handleSuccess, handleError('User not found'));
         }
         
         function handleSuccess(res) {

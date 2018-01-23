@@ -15,7 +15,7 @@
         function register() {
             UserService.register(vm.userEmail, vm.userName, vm.userPassword).then(function(response) {
                 if (response.message) {
-                	vm.error = message;
+                	vm.error = response.message;
                 } else {
                     $location.path('/login');               	
                 }

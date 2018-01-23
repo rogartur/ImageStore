@@ -1,16 +1,19 @@
 package com.imagestore.controller;
 
 import java.io.IOException;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Optional;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.sql.rowset.serial.SerialException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -41,11 +44,12 @@ public class ImageController {
 	private UserService userService;
 
 	@GetMapping(value = "list")
-	public Page<ImageFile> list(final HttpServletRequest request, final Pageable pageRequest) throws ServletException {
+	public Page<ImageFile> list(final HttpServletRequest request, final @RequestParam("page") int page,
+			final @RequestParam("size") int size) throws ServletException {
 
 		final User user = getUserFromClaims(request);
 
-		return imageService.findByUserId(pageRequest, user);
+		return imageService.findByUserId(new PageRequest(page, size), user);
 	}
 
 	@PostMapping(value = "/upload")
@@ -69,8 +73,8 @@ public class ImageController {
 	}
 
 	@GetMapping(value = "/download")
-	public ResponseEntity<?> downloadFile(final HttpServletRequest request, @RequestParam("filename") String filename)
-			throws ServletException {
+	public ResponseEntity<?> downloadFile(final HttpServletRequest request,
+			final @RequestParam("filename") String filename) throws ServletException {
 
 		final User user = getUserFromClaims(request);
 
@@ -104,13 +108,13 @@ public class ImageController {
 	}
 
 	private ImageFile getFile(final MultipartHttpServletRequest request, final User user, Iterator<String> itr)
-			throws IOException {
+			throws IOException, SerialException, SQLException {
 
 		String uploadedFile = itr.next();
 		MultipartFile file = request.getFile(uploadedFile);
 		String name = file.getOriginalFilename();
 		String mimeType = file.getContentType();
-		byte[] bytes = file.getBytes();
+		Blob bytes = new javax.sql.rowset.serial.SerialBlob(file.getBytes());
 
 		ImageFile newFile = new ImageFile(name, user, bytes, mimeType);
 		newFile.setDateUpload(new Date());

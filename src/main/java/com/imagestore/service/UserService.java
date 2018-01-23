@@ -16,16 +16,21 @@ public class UserService {
 
 	public User loadUserByEmail(String email) throws ServletException {
 		User user = userRepository.findByEmail(email);
-		if (user == null)
-			throw new ServletException("Could not find user with email: " + email);
+		if (user == null) throw new ServletException("Could not find user with email: " + email);
 		return user;
 	}
 
-	public User save(User user) {
+	public User save(User user) throws ServletException {
+		checkEmailNotInUse(user.getEmail());
 		return userRepository.save(user);
 	}
-	
+
 	public User update(User user) {
 		return userRepository.saveAndFlush(user);
+	}
+
+	private void checkEmailNotInUse(String email) throws ServletException {
+		User user = userRepository.findByEmail(email);
+		if (user != null) throw new ServletException("Found already existing user with email: " + email);
 	}
 }

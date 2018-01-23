@@ -2,7 +2,7 @@
     'use strict';
  
     angular
-        .module('app', ['ngRoute', 'ngCookies'])
+        .module('app', ['ngRoute', 'ngCookies', 'ui.grid', 'ui.grid.pagination'])
         .config(config)
         .run(run);
  
@@ -36,18 +36,28 @@
             .otherwise({ redirectTo: '/login' });
     }
     
-    run.$inject = ['$rootScope', '$location', '$cookieStore', '$http'];
-    function run($rootScope, $location, $cookieStore, $http) {
+    run.$inject = ['$rootScope', '$location', '$cookieStore', '$http', 'AuthenticationService'];
+    function run($rootScope, $location, $cookieStore, $http, AuthenticationService) {
     	
         $rootScope.globals = $cookieStore.get('globals') || {};
         if ($rootScope.globals.currentUser) {
             $http.defaults.headers.common['Authorization'] = 'Bearer ' + $rootScope.globals.currentUser.authdata
         }
+        
+        $rootScope.loggedIn = $rootScope.globals.currentUser;
+        
+        $rootScope.logout = function() {
+    		var response = AuthenticationService.ClearCredentials();
+    		
+            if (response) {
+            	$location.path('/login'); 
+            }
+        }
 
         $rootScope.$on('$locationChangeStart', function (event, next, current) {
             var restrictedPage = $.inArray($location.path(), ['/login', '/register']) === -1;
-            var loggedIn = $rootScope.globals.currentUser;
-            if (restrictedPage && !loggedIn) {
+            $rootScope.loggedIn = $rootScope.globals.currentUser;
+            if (restrictedPage && !$rootScope.loggedIn) {
                 $location.path('/login');
             }
         });
