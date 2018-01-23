@@ -10,8 +10,8 @@
     function config($routeProvider, $locationProvider) {
         $routeProvider
             .when('/', {
-                controller: 'LoginController',
-                templateUrl: 'login/login.html',
+                controller: 'ImagesController',
+                templateUrl: 'image/images-list.html',
                 controllerAs: 'vm'
             })
  
@@ -27,19 +27,13 @@
                 controllerAs: 'vm'
             })
             
-            .when('/images', {
-                controller: 'ImagesController',
-                templateUrl: 'image/images-list.html',
-                controllerAs: 'vm'
-            })
-            
             .when('/upload', {
                 controller: 'ImageUploadController',
                 templateUrl: 'image/image-upload.html',
                 controllerAs: 'vm'
             })
  
-            .otherwise({ redirectTo: '/' });
+            .otherwise({ redirectTo: '/login' });
     }
     
     run.$inject = ['$rootScope', '$location', '$cookieStore', '$http'];
@@ -47,7 +41,7 @@
     	
         $rootScope.globals = $cookieStore.get('globals') || {};
         if ($rootScope.globals.currentUser) {
-            $http.defaults.headers.common['Authorization'] = 'Basic ' + $rootScope.globals.currentUser.authdata
+            $http.defaults.headers.common['Authorization'] = 'Bearer ' + $rootScope.globals.currentUser.authdata
         }
 
         $rootScope.$on('$locationChangeStart', function (event, next, current) {

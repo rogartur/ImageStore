@@ -8,7 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,25 +27,19 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @RestController
 @RequestMapping("/user")
 public class UserController {
-	
+
 	@Value("${jwt.secret}")
 	private String jwtSecret;
 
 	@Autowired
 	private UserService userService;
 
-	@PostMapping(value = "login")
-	public RestMessage login(@RequestBody final Login login) throws ServletException {
+	@PostMapping(value = "authorize")
+	public ResponseEntity<RestMessage> authorize(@RequestBody final Login login) throws ServletException {
 
-		User user = userService.loadUserByEmail(login.getEmail());
-
-		if (!login.getPassword().equals(user.getPassword())) {
-			throw new ServletException("Invalid password");
-		}
-
-		return new RestMessage(
-				Jwts.builder().setSubject(user.getName()).claim("email", user.getEmail()).claim("name", user.getName())
-				.setIssuedAt(new Date()).signWith(SignatureAlgorithm.HS256, jwtSecret).compact());
+		return new ResponseEntity<>(new RestMessage(Jwts.builder().setSubject(login.getEmail())
+				.claim("email", login.getEmail()).claim("password", login.getPassword()).setIssuedAt(new Date())
+				.signWith(SignatureAlgorithm.HS256, jwtSecret).compact()), HttpStatus.OK);
 	}
 
 	@PostMapping(value = "register")
@@ -55,5 +52,29 @@ public class UserController {
 		}
 
 		return new ResponseEntity<>(user, HttpStatus.CREATED);
+	}
+
+	@PutMapping(value = "update")
+	public ResponseEntity<User> update(@RequestBody final User user) throws ServletException {
+
+		userService.update(user);
+
+		if (user.getUserId() == null) {
+			throw new ServletException("User could not be updated");
+		}
+
+		return new ResponseEntity<>(user, HttpStatus.OK);
+	}
+
+	@GetMapping(value = "get/{email}")
+	public ResponseEntity<User> getUser(@PathVariable final String email) throws ServletException {
+
+		User user = userService.loadUserByEmail(email);
+
+		if (user == null) {
+			throw new ServletException("User could not be updated");
+		}
+
+		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 }

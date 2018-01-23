@@ -5,21 +5,20 @@
         .module('app')
         .controller('RegistrationController', RegistrationController);
  
-    RegistrationController.$inject = ['$scope','$http','$location','UserService'];
-    function RegistrationController($scope, $http, $location, UserService) {
-    	
-        $scope.error = null;
-        $scope.account = null;
+    RegistrationController.$inject = ['$location','UserService'];
+    function RegistrationController($location, UserService) {
+        var vm = this;
         
-        $scope.register = function() {
-            $scope.error = null;
-            UserService.register($scope.userEmail, $scope.userName, $scope.userPassword).then(function(account) {
-            	$scope.account = account;
-            	$location.path('/login');
-            },
-            function(error){
-                $scope.error = error
-                $scope.email = '';
+        vm.register = register;
+        vm.error = null;
+
+        function register() {
+            UserService.register(vm.userEmail, vm.userName, vm.userPassword).then(function(response) {
+                if (response.message) {
+                	vm.error = message;
+                } else {
+                    $location.path('/login');               	
+                }
             });
         }
     }
