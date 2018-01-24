@@ -22,7 +22,7 @@ public class ImageStoreApplication {
 	public FilterRegistrationBean jwtFilter() {
 		final FilterRegistrationBean registrationBean = new FilterRegistrationBean();
 		registrationBean.setFilter(new JwtFilter(jwtSecret));
-		registrationBean.addUrlPatterns("/images/*");
+		registrationBean.addUrlPatterns("/images/*","/user/update");
 		return registrationBean;
 	}
 }

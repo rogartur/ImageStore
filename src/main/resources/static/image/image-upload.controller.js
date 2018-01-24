@@ -5,14 +5,22 @@
         .module('app')
         .controller('ImageUploadController', ImageUploadController);
  
-    ImageUploadController.$inject = ['$scope','$http'];
-    function ImageUploadController($scope, $http) {
-        $scope.partialDownloadLink = 'http://localhost:8080/images/download?filename=';
+    ImageUploadController.$inject = ['$scope','$http', 'ImagesService'];
+    function ImageUploadController($scope, $http, ImagesService) {
         $scope.filename = '';
+        $scope.downloadedFile = null;
+        $scope.error = null;
 
         $scope.uploadFile = function() {
-        	$scope.headerr = $http.defaults.headers.common['Authorization'];
             $scope.processDropzone();
+        };
+        
+        $scope.downloadFile = function() {
+        	ImagesService.downloadImage($scope.filename).then(function(data){
+        		$scope.downloadedFile = data;
+        	}, function(error) {
+        		$scope.error = error;
+        	});
         };
 
         $scope.reset = function() {

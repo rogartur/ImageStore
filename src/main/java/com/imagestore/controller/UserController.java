@@ -3,6 +3,7 @@ package com.imagestore.controller;
 import java.util.Date;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,7 +27,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 @RestController
 @RequestMapping("/user")
-public class UserController {
+public class UserController extends AbstractRestController {
 
 	@Value("${jwt.secret}")
 	private String jwtSecret;
@@ -55,15 +56,21 @@ public class UserController {
 	}
 
 	@PutMapping(value = "update")
-	public ResponseEntity<User> update(@RequestBody final User user) throws ServletException {
+	public ResponseEntity<?> update(final HttpServletRequest request, @RequestBody final User user) throws ServletException {
+		
+		User existingDB = userService.findByEmail(user.getEmail());
+		User currentUser = getUserFromClaims(request);
+		User currentUserDB = userService.loadUserByEmail(currentUser.getEmail());
+		
+		if(existingDB != null && !currentUser.getEmail().equals(existingDB.getEmail()))
+			return new ResponseEntity<>(new RestMessage("User with that email address is already existing"), HttpStatus.CONFLICT);
 
-		userService.update(user);
+		currentUserDB.setEmail(user.getEmail());
+		currentUserDB.setName(user.getName());
+		currentUserDB.setPassword(user.getPassword());
+		userService.update(currentUserDB);
 
-		if (user.getUserId() == null) {
-			throw new ServletException("User could not be updated");
-		}
-
-		return new ResponseEntity<>(user, HttpStatus.OK);
+		return new ResponseEntity<>(currentUserDB, HttpStatus.OK);
 	}
 
 	@GetMapping(value = "get/{email}")

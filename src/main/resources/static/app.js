@@ -32,6 +32,12 @@
                 templateUrl: 'image/image-upload.html',
                 controllerAs: 'vm'
             })
+            
+            .when('/profile', {
+                controller: 'UserProfileController',
+                templateUrl: 'user-profile/profile.html',
+                controllerAs: 'vm'
+            })
  
             .otherwise({ redirectTo: '/login' });
     }

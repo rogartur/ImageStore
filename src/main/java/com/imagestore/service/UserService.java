@@ -19,6 +19,11 @@ public class UserService {
 		if (user == null) throw new ServletException("Could not find user with email: " + email);
 		return user;
 	}
+	
+	public User findByEmail(String email) throws ServletException {
+		return userRepository.findByEmail(email);
+	}
+
 
 	public User save(User user) throws ServletException {
 		checkEmailNotInUse(user.getEmail());

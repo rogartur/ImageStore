@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.filter.GenericFilterBean;
 
 import io.jsonwebtoken.Claims;
@@ -18,6 +20,8 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureException;
 
 public class JwtFilter extends GenericFilterBean {
+	
+	private final Logger log = LoggerFactory.getLogger(this.getClass());
 
 	private String jwtSecret;
 
@@ -28,6 +32,8 @@ public class JwtFilter extends GenericFilterBean {
 	@Override
 	public void doFilter(final ServletRequest req, final ServletResponse res, final FilterChain chain)
 			throws IOException, ServletException {
+		
+		log.debug("Filtering request for Authorization header");
 
 		final HttpServletRequest request = (HttpServletRequest) req;
 

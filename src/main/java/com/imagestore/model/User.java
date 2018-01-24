@@ -5,6 +5,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import com.imagestore.validation.ValidPassword;
+
 @Entity
 public class User {
 
@@ -16,6 +18,7 @@ public class User {
 
 	private String email;
 
+	@ValidPassword
 	private String password;
 
 	public Long getUserId() {
@@ -45,5 +48,4 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
 }

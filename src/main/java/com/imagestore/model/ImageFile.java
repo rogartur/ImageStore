@@ -4,6 +4,7 @@ import java.sql.Blob;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -25,9 +26,11 @@ public class ImageFile {
 
 	private Date dateUpload;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "userId")
 	private User user;
+	
+	public ImageFile() {}
 
 	public ImageFile(String name, User owner, Blob file, String mimeType) {
 		this.name = name;

@@ -1,6 +1,11 @@
 <div class="container" ng-controller='ImageUploadController' ng-cloak>
 	<h2>Upload Image</h2>
 	<div class="col-xs-9 col-xs-offset-3">
+		<div class="alert alert-danger" role="alert"
+			ng-show="error.data.content">
+			<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+			<span class="sr-only">Error:</span> {{error.data.content}}
+		</div>
 		<div class="well">
 			<form action="" class="dropzone" dropzone="" id="dropzone">
 				<div class="dz-default dz-message"></div>
@@ -18,9 +23,13 @@
 				<label for="download">File to download</label> <input
 					ng-model="filename" type="text" placeholder="Filename" /> <a
 					id="download" class="btn btn-primary" href=""
-					ng-href="{{ partialDownloadLink + filename }}"> DownloadFile </a>
+					ng-click="downloadFile()"> DownloadFile </a>
 			</div>
 		</form>
+	</div>
+	<div ng-show="downloadedFile">
+		<img data-ng-src="data:image/jpg;base64,{{downloadedFile.content}}"
+			ng-model="updatedPhoto" />
 	</div>
 </div>
 

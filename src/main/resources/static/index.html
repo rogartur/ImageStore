@@ -23,10 +23,11 @@
 			<div class="collapse navbar-collapse" id="navbar-collapse-1">
 				<ul class="nav navbar-nav navbar-left">
 					<li><a href="#" ng-show="loggedIn.authdata"
-						ng-href="#!/upload" ng-cloak> Upload</a></li>
+						ng-href="#!/upload" ng-cloak>Download/Upload</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right" ng-show="loggedIn.authdata"
 					ng-cloak>
+					<li><a href="#" ng-href="#!/profile">Profile</a></li>
 					<li><a href="#" ng-click="logout()">Logout</a></li>
 				</ul>
 			</div>
@@ -57,5 +58,6 @@
 <script src="image/images-list.controller.js"></script>
 <script src="image/image-upload.controller.js"></script>
 <script src="image/image-upload.directive.js"></script>
+<script src="user-profile/profile.controller.js"></script>
 <script src="registration/registration.controller.js"></script>
 </html>

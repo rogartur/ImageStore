@@ -20,12 +20,18 @@
             var response;
             UserService.get(email)
                 .then(function (user) {
-                    if (user !== null && user.password === password) {
-                    	response = { success: true, message: 'User authorized' };
-                    } else {
-                        response = { success: false, message: 'Username or password is incorrect' };
-                    }
-                    callback(response);
+                	if(user.success == false) {
+                		callback(user);
+                	} else {
+	                    if (user !== null && user.password === password) {
+	                    	response = { success: true, message: 'User authorized' };
+	                    } else {
+	                        response = { success: false, message: 'Username or password is incorrect' };
+	                    }
+	                    callback(response);
+                	}
+                }, function (error) {
+                	return error;
                 });
         }
  
